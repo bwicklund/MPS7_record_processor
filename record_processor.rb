@@ -132,8 +132,10 @@ BEGIN {
   end
 
   def print_results(results)
-    warn 'WARNING: Records count does not match header value: ' \
-      "Records: #{results[:records]} Header: #{results[:header_record_count]}"
+    if results[:records] != results[:header_record_count]
+      warn 'WARNING: Records count does not match header value: ' \
+        "Records: #{results[:records]} Header: #{results[:header_record_count]}"
+    end
     puts
     puts "Header Row Record Count: #{results[:header_record_count]}"
     puts "Total Records: #{results[:records]}"
