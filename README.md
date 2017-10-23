@@ -30,6 +30,8 @@ Row:
 | 1 byte record type enum | 4 byte (uint32) Unix timestamp | 8 byte (uint64) user ID | 8 byte (float64) (if enum is 0 || 1)
 ```
 
+***NOTE: Since doing math on floats, especially when dealing with a base10 currency number is not always accurate we are converting the 8byte (float64) from a `Float` to `BigDecimal` type***
+
 Crude Validations:
 
 Program will `exit` if it does not detect the "magic string": 'MPS7'
@@ -73,12 +75,13 @@ G (optionally) = double-precision, network (big-endian) byte order (If enum is 0
 #### Results on data set given in `data.dat`
 ```
 WARNING: Records count does not match header value: Records: 72 Header: 71
+
 Header Row Record Count: 71
 Total Records: 72
-Total Credits: $10073.36
-Total Debits: $18203.70
+Total Credits: $10073.359933036814
+Total Debits: $18203.6995334020799
 Total Autopays Started: 10
 Total Autopays Ended: 8
-Balance for user ID 2456938384156277127: $0.00
+Balance for user ID 2456938384156277127: $0.0
 ```
 

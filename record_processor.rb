@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 if ARGV[0].nil?
   usage
@@ -92,6 +94,9 @@ BEGIN {
 
       validate_row_data(data_row)
 
+      # Floats are not the best way to store currency, lets convert to BigDecimal
+      data_row[3] = data_row[3].to_d if data_row[3]
+
       add_data_row_to_results(data_row, results)
     end
   end
@@ -139,18 +144,11 @@ BEGIN {
     puts
     puts "Header Row Record Count: #{results[:header_record_count]}"
     puts "Total Records: #{results[:records]}"
-    puts "Total Credits: $#{round_nicely(results[:total_credits])}"
-    puts "Total Debits: $#{round_nicely(results[:total_debits])}"
+    puts "Total Credits: $#{results[:total_credits].to_s("F")}"
+    puts "Total Debits: $#{results[:total_debits].to_s("F")}"
     puts "Total Autopays Started: #{results[:autopays_started]}"
     puts "Total Autopays Ended: #{results[:autopays_ended]}"
     puts 'Balance for user ID 2456938384156277127: $'\
-      "#{round_nicely(results[:balance_for_2456938384156277127])}"
-  end
-
-  def round_nicely(num)
-    # Leave 0 at end example:
-    # 3.70000.round(2) // 3.7
-    # sprintf('%.2f',  3.70000) // 3.70
-    format('%.2f', num)
+      "#{results[:balance_for_2456938384156277127].to_s("F")}"
   end
 }
